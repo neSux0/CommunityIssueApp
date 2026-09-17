@@ -1,9 +1,16 @@
-﻿using CommunityAppMiniProjectWinForms.Data;
+﻿
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 namespace CommunityAppMiniProjectWinForms.Classes;
 public class Issue
 {
-	private static int nextIssueId = 1;
+
+    //===========DATA BASE===========================//
+    public User User { get; set; }
+    public int _UserID { get; set; } //foreign key.
+
+	//================================================//
+    private static int nextIssueId = 1;
 	private int _IssueID { get; set; } //will likely increment starting from 1.
 	private string _description { get; set; }
 	private string _location { get; set; }

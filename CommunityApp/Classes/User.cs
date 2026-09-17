@@ -1,10 +1,15 @@
 ﻿using System;
 using System.DirectoryServices;
 
+namespace CommunityAppMiniProjectWinForms.Classes;
+
 public class User
 {
 	private static int nextUserId = 1000; //id starts at 1000
-	private int _UserId; //will likely be randomly generated for identification.
+	//==================DATA BASE ==============================//
+	public int _UserId; //Primary key
+	public virtual ICollection<Issue> Issues { get; } = new List<Issue>(); //used to navigate the issues of posted by users.
+   //============================================================//
 	private string _username { get; set; } //will prompt user to create
 	private string _password { get; set; } //will promp user to create
 

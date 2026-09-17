@@ -82,9 +82,14 @@ Each user contains:
     LoginForm.cs
     MainFeedForm.cs
     CreateIssueForm.cs
+
+
 ## UPDATED as of September 17, 2026.
- 
 #### DATA
 - Will use persistent database.
 - Use Entity Framework Core.SqLite.
-- 
+- The models to be used will be
+    ##### Users & Issues
+      - UserId is the primary key of User.
+      - Issue contains UserId as a foreign key referencing User.UserId.
+        
