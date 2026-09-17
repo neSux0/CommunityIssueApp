@@ -8,6 +8,4 @@ public class PublicUser : User
 	}
 
 
-	//=========Accessor==============
-
 }

@@ -82,5 +82,9 @@ Each user contains:
     LoginForm.cs
     MainFeedForm.cs
     CreateIssueForm.cs
-
-#### Data/
+## UPDATED as of September 17, 2026.
+ 
+#### DATA
+- Will use persistent database.
+- Use Entity Framework Core.SqLite.
+- 

@@ -219,7 +219,7 @@
             // 
             // UserConfirmCompleteBtn
             // 
-            UserConfirmCompleteBtn.Location = new Point(333, 255);
+            UserConfirmCompleteBtn.Location = new Point(411, 264);
             UserConfirmCompleteBtn.Name = "UserConfirmCompleteBtn";
             UserConfirmCompleteBtn.Size = new Size(202, 33);
             UserConfirmCompleteBtn.TabIndex = 22;

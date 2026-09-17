@@ -7,6 +7,7 @@ using CommunityAppMiniProjectWinForms.Classes;
 
 namespace CommunityAppMiniProjectWinForms.Data
 {
+    //Contians the data for users and issues.
     //make static so dont need to create an object of this class. use class directly for orgnaization.
     internal static class AppData
     {
