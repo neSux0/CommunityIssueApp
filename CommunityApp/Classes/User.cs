@@ -5,7 +5,6 @@ namespace CommunityAppMiniProjectWinForms.Classes;
 
 public class User
 {
-	private static int nextUserId = 1000; //id starts at 1000
 	//==================DATA BASE ==============================//
 	public int _UserId; //Primary key
 	public virtual ICollection<Issue> Issues { get; } = new List<Issue>(); //used to navigate the issues of posted by users.
@@ -17,7 +16,6 @@ public class User
     private bool _IsDepartment { get; set; } //Account Type
 	public User(string username, string password)
 	{
-		_UserId = nextUserId++; //once assigned increment it.
 		_username = username;
 		_password = password;
 	}
