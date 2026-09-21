@@ -48,12 +48,12 @@ namespace CommunityAppMiniProjectWinForms.Forms
             CreateIssueTimeDisplay.Text = CurrIssue.CreatedAt.ToString();
             PictureBox1.Image = CurrIssue.GetImage;
             VoteCountDisplay.Text = CurrIssue.GetConfirmVoteCount.ToString();
-            SubmittedByDisplay.Text = CurrIssue.GetCreatedByUser.Username;
+            SubmittedByDisplay.Text = CurrIssue.User.Username;
 
             //Only the user that submitted the post can remove it. Therefore, the
             //remove button will only show for that user.
             //It will also show for department users.
-            if (CurrIssue.GetCreatedByUser.UserId == AppData.GetCurrentUser.UserId || AppData.GetCurrentUser is DepartmentUser)
+            if (CurrIssue.User.UserId == AppData.GetCurrentUser.UserId || AppData.GetCurrentUser is DepartmentUser)
             {
                 RemovePostBtn.Show();
             }

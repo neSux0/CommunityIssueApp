@@ -1,4 +1,5 @@
 ﻿using CommunityAppMiniProjectWinForms.Data;
+using CommunityAppMiniProjectWinForms.Classes;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

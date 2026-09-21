@@ -1,4 +1,5 @@
 ﻿using System;
+namespace CommunityAppMiniProjectWinForms.Classes;
 
 public class PublicUser : User
 {

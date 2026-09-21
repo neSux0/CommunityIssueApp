@@ -6,7 +6,7 @@ namespace CommunityAppMiniProjectWinForms.Classes;
 public class User
 {
 	//==================DATA BASE ==============================//
-	public int _UserId; //Primary key
+	public int UserId { get; set; } //Primary key
 	public virtual ICollection<Issue> Issues { get; } = new List<Issue>(); //used to navigate the issues of posted by users.
    //============================================================//
 	private string _username { get; set; } //will prompt user to create
@@ -25,12 +25,6 @@ public class User
 	{
 		get { return _username; }
 	}
-    //makes id readable.
-    public int UserId
-    {
-        get { return _UserId; }
-    }
-
 	public string Password
 	{
 		get { return _password; }
