@@ -17,6 +17,7 @@ namespace CommunityAppMiniProjectWinForms.Forms
             InitializeComponent();
         }
         private Image? selectedImage; //this will store the image.
+        private string? imagePath; //this will store the image path.
         private void CreateIssuePostBtn_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(IssueDescriptionTextbox.Text) ||
@@ -27,7 +28,7 @@ namespace CommunityAppMiniProjectWinForms.Forms
             }
             else
             {
-                Issue NewIssue = new Issue(IssueDescriptionTextbox.Text, CreateIssueLocationTextbox.Text, selectedImage, AppData.GetCurrentUser);
+                Issue NewIssue = new Issue(IssueDescriptionTextbox.Text, CreateIssueLocationTextbox.Text, selectedImage, imagePath, AppData.GetCurrentUser);
                 AppData.AddIssue(NewIssue);
                 MessageBox.Show("Issue has been posted.");
                 this.Close(); //closes the create issue form after posting.
@@ -45,7 +46,8 @@ namespace CommunityAppMiniProjectWinForms.Forms
 
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                selectedImage = Image.FromFile(openFileDialog1.FileName);
+                imagePath = openFileDialog1.FileName;
+                selectedImage = Image.FromFile(imagePath);
                 pictureBox1.Image = selectedImage; //this lets you preview the image.
                 CreateIssueUploadBtn.Hide();// hides the button so it doesnt block the preview image.
             }

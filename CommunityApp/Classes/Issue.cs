@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 namespace CommunityAppMiniProjectWinForms.Classes;
 public class Issue
 {
@@ -14,24 +15,28 @@ public class Issue
 
     public string Description { get; set; }
 	public string Location { get; set; }
-	public Image? Image { get; set; } //stores the image object in memory.
+	public string? ImagePath { get; set; } //stores the image path.
 	public DateTime CreatedAt { get; set; } 
-	public string Severity { get; set; }
 	public IssueStatus WorkStatus { get; set; }
-   //================================================//
+	//================================================//
+	[NotMapped]
+    public Image? Image { get; set; }
+    public string? Severity { get; set; }
     private HashSet<string> _ConfirmVotes { get; set; } //the number of users that agrees of the ongoing issue.
 	private HashSet<User> _CompleteVotes { get; set; } //the number of users who agree that the work order is completed.
 	private int _VotesNeeded { get; set; }
 
-    public Issue(string description, string location, Image? image, User CreatedByUser)
+    public Issue(string description, string location, Image? image, string? imagePath, User CreatedByUser)
     {
 		//From user.
 		Description = description;
 		Location = location;
 		Image = image;
+		ImagePath = imagePath;
 
         WorkStatus = IssueStatus.Submitted;
 		CreatedAt = DateTime.Now;
+
 		_ConfirmVotes = new();
 		_CompleteVotes = new();
 		_VotesNeeded = 2; //hard coded. 2 votes are needed to complete post.
