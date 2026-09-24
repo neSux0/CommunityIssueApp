@@ -17,10 +17,10 @@ namespace CommunityAppMiniProjectWinForms.Forms
         public MainFeed()
         {
             InitializeComponent();
-            if (AppData.GetCurrentUser is DepartmentUser)
+            if (AppData.CurrentUser is DepartmentUser)
             {
                 AddIssueBtn.Enabled = false; //prevents department user from liking.
-                MainFeedTitleLabel.Text = $"Welcome, {AppData.GetCurrentUser.Username}!"; 
+                MainFeedTitleLabel.Text = $"Welcome, {AppData.CurrentUser.Username}!"; 
             }
             LoadIssues();
         }

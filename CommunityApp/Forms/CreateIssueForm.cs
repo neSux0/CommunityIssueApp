@@ -20,6 +20,8 @@ namespace CommunityAppMiniProjectWinForms.Forms
         private string? imagePath; //this will store the image path.
         private void CreateIssuePostBtn_Click(object sender, EventArgs e)
         {
+            using AppDataContext context = new(); //to create the database object to acess SQlite database.
+
             if (string.IsNullOrWhiteSpace(IssueDescriptionTextbox.Text) ||
         string.IsNullOrWhiteSpace(CreateIssueLocationTextbox.Text))
             {
@@ -28,8 +30,8 @@ namespace CommunityAppMiniProjectWinForms.Forms
             }
             else
             {
-                Issue NewIssue = new Issue(IssueDescriptionTextbox.Text, CreateIssueLocationTextbox.Text, selectedImage, imagePath, AppData.GetCurrentUser);
-                AppData.AddIssue(NewIssue);
+                Issue NewIssue = new Issue(IssueDescriptionTextbox.Text, CreateIssueLocationTextbox.Text, selectedImage, imagePath, AppData.CurrentUser);
+                context.AddIssue(NewIssue);
                 MessageBox.Show("Issue has been posted.");
                 this.Close(); //closes the create issue form after posting.
             }

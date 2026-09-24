@@ -26,6 +26,7 @@ public class Issue
 	private HashSet<User> _CompleteVotes { get; set; } //the number of users who agree that the work order is completed.
 	private int _VotesNeeded { get; set; }
 
+	protected Issue() { }// EF recreates an old Issue object from the database b/c EF will not be able to match the Image and CreatedByUser as they are not in the datbase.
     public Issue(string description, string location, Image? image, string? imagePath, User CreatedByUser)
     {
 		//From user.

@@ -22,7 +22,7 @@ namespace CommunityAppMiniProjectWinForms.Forms
             DepartmentAcceptIssueBtn.Hide();
             DepartmentCompleteBtn.Hide();
             UserConfirmCompleteBtn.Hide();
-            if (AppData.GetCurrentUser is DepartmentUser)
+            if (AppData.CurrentUser is DepartmentUser)
             {
                 AgreeBtn.Enabled = false; //prevents department user from liking.
                 DepartmentAcceptIssueBtn.Show();
@@ -36,7 +36,7 @@ namespace CommunityAppMiniProjectWinForms.Forms
                     DepartmentCompleteBtn.Enabled = false;
                 }
             }
-            if(AppData.GetCurrentUser is PublicUser && CurrIssue.WorkStatus == IssueStatus.WaitingUserApproval)
+            if(AppData.CurrentUser is PublicUser && CurrIssue.WorkStatus == IssueStatus.WaitingUserApproval)
             {
                 UserConfirmCompleteBtn.Show();
 
@@ -53,7 +53,7 @@ namespace CommunityAppMiniProjectWinForms.Forms
             //Only the user that submitted the post can remove it. Therefore, the
             //remove button will only show for that user.
             //It will also show for department users.
-            if (CurrIssue.User.UserId == AppData.GetCurrentUser.UserId || AppData.GetCurrentUser is DepartmentUser)
+            if (CurrIssue.User.UserId == AppData.CurrentUser.UserId || AppData.CurrentUser is DepartmentUser)
             {
                 RemovePostBtn.Show();
             }
@@ -66,13 +66,13 @@ namespace CommunityAppMiniProjectWinForms.Forms
 
         private void AgreeBtn_Click(object sender, EventArgs e)
         {
-            if (!CurrIssue.UserLiked.Contains(AppData.GetCurrentUser.Username))
+            if (!CurrIssue.UserLiked.Contains(AppData.CurrentUser.Username))
             {
-                CurrIssue.AddLikedUser(AppData.GetCurrentUser.Username);
+                CurrIssue.AddLikedUser(AppData.CurrentUser.Username);
             }
-            else if (CurrIssue.UserLiked.Contains(AppData.GetCurrentUser.Username))
+            else if (CurrIssue.UserLiked.Contains(AppData.CurrentUser.Username))
             {
-                CurrIssue.RemoveLikedUser(AppData.GetCurrentUser.Username);
+                CurrIssue.RemoveLikedUser(AppData.CurrentUser.Username);
             }
             VoteCountDisplay.Text = CurrIssue.GetConfirmVoteCount.ToString();
         }
@@ -116,7 +116,7 @@ namespace CommunityAppMiniProjectWinForms.Forms
             {
                 CurrIssue.ChangeWorkStatus(IssueStatus.Completed);
             }
-            CurrIssue.AddUserCompleted(AppData.GetCurrentUser);
+            CurrIssue.AddUserCompleted(AppData.CurrentUser);
             StatusDisplay.Text = GetStatusText(CurrIssue.WorkStatus);
             UserConfirmCompleteBtn.Enabled = false;
         }
