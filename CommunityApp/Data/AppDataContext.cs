@@ -11,8 +11,23 @@ namespace CommunityAppMiniProjectWinForms.Classes
         public DbSet<User> Users { get; set; }
         public DbSet<Issue> Issues { get; set; }
 
+        // DbPath gives the SQLite database a fixed location
+        // so the app does not create duplicate databases from relative paths.
+        //because..Update-Database uses your EF migration to create/update a SQLite database file and put the tables inside it.
+        //Update-Database created one CommunityApp.db in the folder it was operating from.
+        //Then when the WinForms app ran, it was operating from the compiled winForms output folder.
+        public string DbPath { get; }
+
+        public AppDataContext()
+        {
+           
+            var folder = Environment.SpecialFolder.LocalApplicationData; //stores database in local/AppData folder.
+            var path = Environment.GetFolderPath(folder);
+
+            DbPath = Path.Join(path, "CommunityApp.db");
+        }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-       => optionsBuilder.UseSqlite("Data Source=Users.db");
+       => optionsBuilder.UseSqlite($"Data Source= {DbPath}");
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

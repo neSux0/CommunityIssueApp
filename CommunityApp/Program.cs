@@ -1,4 +1,7 @@
 
+using CommunityAppMiniProjectWinForms.Classes;
+using Microsoft.EntityFrameworkCore;
+
 namespace CommunityAppMiniProjectWinForms;
 internal static class Program
 {
@@ -9,6 +12,11 @@ internal static class Program
     static void Main()
     {
         ApplicationConfiguration.Initialize();
+        using AppDataContext context = new();
+
+        MessageBox.Show(
+            context.Database.GetDbConnection().DataSource
+        );
         Application.Run(new LogInForm());
     }
 }
