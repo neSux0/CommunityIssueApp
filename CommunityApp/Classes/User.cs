@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.DirectoryServices;
 
 namespace CommunityAppMiniProjectWinForms.Classes;
@@ -14,6 +15,7 @@ public class User
 
     //Department privlege. If false, they are a community user. if true, they are department user.
     public bool IsDepartment { get; set; } //Account Type
+	
 	public User(string username, string password)
 	{
 		Username = username;

@@ -1,3 +1,5 @@
+using CommunityAppMiniProjectWinForms;
+
 namespace CommunityApp.Classes
 {
     internal static class Program

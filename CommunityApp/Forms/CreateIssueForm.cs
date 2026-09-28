@@ -22,6 +22,7 @@ namespace CommunityAppMiniProjectWinForms.Forms
         {
             using AppDataContext context = new(); //to create the database object to acess SQlite database.
 
+
             if (string.IsNullOrWhiteSpace(IssueDescriptionTextbox.Text) ||
         string.IsNullOrWhiteSpace(CreateIssueLocationTextbox.Text))
             {
