@@ -48,6 +48,16 @@ namespace CommunityAppMiniProjectWinForms.Classes
             return context.Users
                 .Any(u => u.Username == username);
         }
+        public void RemoveIssue(int issueID)
+        {
+            using AppDataContext context = new();
+            Issue? issue = context.Issues.FirstOrDefault(i => i.IssueId == issueID);
+            if (issue != null)
+            {
+                context.Issues.Remove(issue);
+                context.SaveChanges();
+            }
+        }
 
     }
 

@@ -79,8 +79,9 @@ namespace CommunityAppMiniProjectWinForms.Forms
 
         private void RemovePostBtn_Click(object sender, EventArgs e)
         {
-            AppData.IssuesList.Remove(CurrIssue);
-            Parent.Controls.Remove(this);
+            using AppDataContext context = new();
+            context.RemoveIssue(CurrIssue.IssueId);
+            Parent?.Controls.Remove(this);
             Dispose();
         }
 

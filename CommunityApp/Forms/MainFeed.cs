@@ -28,7 +28,9 @@ namespace CommunityAppMiniProjectWinForms.Forms
         private void LoadIssues()
         {
             FeedPanel.Controls.Clear(); //this needs to be added to prevent duplicates posting.
-            foreach (Issue issue in AppData.IssuesList)
+            using AppDataContext context = new();
+
+            foreach (Issue issue in context.Issues)
             {
                 IssuePost post = new IssuePost(issue);
                 FeedPanel.Controls.Add(post);
