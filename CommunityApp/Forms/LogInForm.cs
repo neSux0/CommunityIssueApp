@@ -2,7 +2,7 @@ using CommunityAppMiniProjectWinForms.Data;
 using CommunityAppMiniProjectWinForms.Forms;
 using System.Data;
 
-namespace CommunityApp
+namespace CommunityAppMiniProjectWinForms
 {
     public partial class LogInForm : Form
     {

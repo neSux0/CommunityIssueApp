@@ -9,7 +9,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-namespace CommunityApp
+namespace CommunityAppMiniProjectWinForms
 {
     public partial class CreateAccountForm : Form
     {

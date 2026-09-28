@@ -1,17 +1,14 @@
-using CommunityAppMiniProjectWinForms;
 
-namespace CommunityApp.Classes
+namespace CommunityAppMiniProjectWinForms;
+internal static class Program
 {
-    internal static class Program
+    /// <summary>
+    ///  The main entry point for the application.
+    /// </summary>
+    [STAThread]
+    static void Main()
     {
-        /// <summary>
-        ///  The main entry point for the application.
-        /// </summary>
-        [STAThread]
-        static void Main()
-        {
-            ApplicationConfiguration.Initialize();
-            Application.Run(new LogInForm());
-        }
+        ApplicationConfiguration.Initialize();
+        Application.Run(new LogInForm());
     }
 }
