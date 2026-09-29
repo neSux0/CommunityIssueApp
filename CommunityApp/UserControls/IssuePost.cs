@@ -46,9 +46,13 @@ namespace CommunityAppMiniProjectWinForms.Forms
             LocationDisplay.Text = CurrIssue.Location;
             StatusDisplay.Text = GetStatusText(CurrIssue.WorkStatus);
             CreateIssueTimeDisplay.Text = CurrIssue.CreatedAt.ToString();
-            PictureBox1.Image = CurrIssue.Image;
+            //picture receival.
+            if (!string.IsNullOrWhiteSpace(CurrIssue.ImagePath) && File.Exists(CurrIssue.ImagePath))
+            {
+                PictureBox1.Image = Image.FromFile(CurrIssue.ImagePath);
+            }
             VoteCountDisplay.Text = CurrIssue.GetConfirmVoteCount.ToString();
-            SubmittedByDisplay.Text = CurrIssue.User.Username;
+            SubmittedByDisplay.Text = CurrIssue.User.Username; //lost upon program closure. The userid relationships helps receive it beack in loadissue().
 
             //Only the user that submitted the post can remove it. Therefore, the
             //remove button will only show for that user.
