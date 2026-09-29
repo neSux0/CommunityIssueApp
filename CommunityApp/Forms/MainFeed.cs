@@ -7,6 +7,7 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using Microsoft.EntityFrameworkCore;
 
 namespace CommunityAppMiniProjectWinForms.Forms
 {
@@ -30,7 +31,7 @@ namespace CommunityAppMiniProjectWinForms.Forms
             FeedPanel.Controls.Clear(); //this needs to be added to prevent duplicates posting.
             using AppDataContext context = new();
 
-            foreach (Issue issue in context.Issues)
+            foreach (Issue issue in context.Issues.Include(i => i.User))
             {
                 IssuePost post = new IssuePost(issue);
                 FeedPanel.Controls.Add(post);

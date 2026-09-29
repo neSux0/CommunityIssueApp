@@ -22,11 +22,14 @@ public class Issue
 	[NotMapped]
     public Image? Image { get; set; }
     public string? Severity { get; set; }
-    private HashSet<string> _ConfirmVotes { get; set; } //the number of users that agrees of the ongoing issue.
-	private HashSet<User> _CompleteVotes { get; set; } //the number of users who agree that the work order is completed.
+	private HashSet<string> _ConfirmVotes { get; set; } = new();  //the number of users that agrees of the ongoing issue.
+	private HashSet<User> _CompleteVotes { get; set; } = new(); //the number of users who agree that the work order is completed.
 	private int _VotesNeeded { get; set; }
 
-	protected Issue() { }// EF recreates an old Issue object from the database b/c EF will not be able to match the Image and CreatedByUser as they are not in the datbase.
+    // Used by EF Core to recreate Issue objects from database data
+    // without calling the normal constructor.
+    //EF creates an empty object first, then fills its mapped properties with values from the database.
+    protected Issue() { }
     public Issue(string description, string location, Image? image, string? imagePath, User CreatedByUser)
     {
 		//From user.
@@ -38,11 +41,9 @@ public class Issue
         WorkStatus = IssueStatus.Submitted;
 		CreatedAt = DateTime.Now;
 
-		_ConfirmVotes = new();
-		_CompleteVotes = new();
 		_VotesNeeded = 2; //hard coded. 2 votes are needed to complete post.
 		//this keeps it convient because it allows us to track the user without having to query the database.
-		User = CreatedByUser; // when an issue is created, store the user object that created that issue.
+		UserId = CreatedByUser.UserId; // when an issue is created, store the user object that created that issue.
 		
     }
 
