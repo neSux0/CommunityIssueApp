@@ -22,7 +22,7 @@ namespace CommunityAppMiniProjectWinForms.Forms
             DepartmentAcceptIssueBtn.Hide();
             DepartmentCompleteBtn.Hide();
             UserConfirmCompleteBtn.Hide();
-            if (AppData.CurrentUser is DepartmentUser)
+            if (AppData.CurrentUser.IsDepartment)
             {
                 AgreeBtn.Enabled = false; //prevents department user from liking.
                 DepartmentAcceptIssueBtn.Show();
@@ -36,7 +36,7 @@ namespace CommunityAppMiniProjectWinForms.Forms
                     DepartmentCompleteBtn.Enabled = false;
                 }
             }
-            if(AppData.CurrentUser is PublicUser && CurrIssue.WorkStatus == IssueStatus.WaitingUserApproval)
+            if (!AppData.CurrentUser.IsDepartment && CurrIssue.WorkStatus == IssueStatus.WaitingUserApproval)
             {
                 UserConfirmCompleteBtn.Show();
 
@@ -57,7 +57,7 @@ namespace CommunityAppMiniProjectWinForms.Forms
             //Only the user that submitted the post can remove it. Therefore, the
             //remove button will only show for that user.
             //It will also show for department users.
-            if (CurrIssue.User.UserId == AppData.CurrentUser.UserId || AppData.CurrentUser is DepartmentUser)
+            if (CurrIssue.User == AppData.CurrentUser || AppData.CurrentUser.IsDepartment)
             {
                 RemovePostBtn.Show();
             }
@@ -117,7 +117,7 @@ namespace CommunityAppMiniProjectWinForms.Forms
 
         private void UserConfirmCompleteBtn_Click(object sender, EventArgs e)
         {
-            if(CurrIssue.GetVoteNeededToComplete == CurrIssue.GetCompleteVoteCount)
+            if (CurrIssue.GetVoteNeededToComplete == CurrIssue.GetCompleteVoteCount)
             {
                 CurrIssue.ChangeWorkStatus(IssueStatus.Completed);
             }
@@ -125,5 +125,6 @@ namespace CommunityAppMiniProjectWinForms.Forms
             StatusDisplay.Text = GetStatusText(CurrIssue.WorkStatus);
             UserConfirmCompleteBtn.Enabled = false;
         }
+
     }
 }

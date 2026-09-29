@@ -18,7 +18,7 @@ namespace CommunityAppMiniProjectWinForms.Forms
         public MainFeed()
         {
             InitializeComponent();
-            if (AppData.CurrentUser is DepartmentUser)
+            if (AppData.CurrentUser.IsDepartment)
             {
                 AddIssueBtn.Enabled = false; //prevents department user from liking.
                 MainFeedTitleLabel.Text = $"Welcome, {AppData.CurrentUser.Username}!"; 
@@ -31,7 +31,7 @@ namespace CommunityAppMiniProjectWinForms.Forms
             FeedPanel.Controls.Clear(); //this needs to be added to prevent duplicates posting.
             using AppDataContext context = new();
 
-            foreach (Issue issue in context.Issues.Include(i => i.User)) //it uses userID relationship in each issue to get the User object.
+            foreach (Issue issue in context.Issues.Include(i => i.User)) //it uses userID relationship in each issue to get the User.
             {
                 IssuePost post = new IssuePost(issue);
                 FeedPanel.Controls.Add(post);
