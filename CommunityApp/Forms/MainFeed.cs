@@ -43,6 +43,11 @@ namespace CommunityAppMiniProjectWinForms.Forms
             }
         }
 
+        private void LoadCount()
+        {
+
+        }
+
         private void AddIssueBtn_Click(object sender, EventArgs e)
         {
             CreateIssueForm createForm = new CreateIssueForm();
