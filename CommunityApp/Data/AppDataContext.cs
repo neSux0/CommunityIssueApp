@@ -11,6 +11,8 @@ namespace CommunityAppMiniProjectWinForms.Classes
         public DbSet<User> Users { get; set; }
         public DbSet<Issue> Issues { get; set; }
 
+        public DbSet<IssueVote> IssueVotes { get; set; }
+
         // DbPath gives the SQLite database a fixed location
         // so the app does not create duplicate databases from relative paths.
         //because..Update-Database uses your EF migration to create/update a SQLite database file and put the tables inside it.
@@ -36,6 +38,9 @@ namespace CommunityAppMiniProjectWinForms.Classes
             modelBuilder.Entity<User>()
                 .HasIndex(u => u.Username) 
                 .IsUnique();
+            //creates a composite primary key for issueVote, which eans that userid and issueid needs to be unique.
+            modelBuilder.Entity<IssueVote>()
+                .HasKey(v => new { v.UserId, v.IssueId });
         }
 
         public void AddUser(User user)
@@ -48,6 +53,13 @@ namespace CommunityAppMiniProjectWinForms.Classes
         {
             using AppDataContext context = new();
             context.Issues.Add(issue);
+            context.SaveChanges();
+        }
+
+        public void AddIssueVote(IssueVote vote)
+        {
+            using AppDataContext context = new();
+            context.IssueVotes.Add(vote);
             context.SaveChanges();
         }
         public User? SearchUser(string username)
@@ -72,6 +84,15 @@ namespace CommunityAppMiniProjectWinForms.Classes
                 context.Issues.Remove(issue);
                 context.SaveChanges();
             }
+        }
+
+        public string GetLikedCount(Issue currentIssue)
+        {
+            using AppDataContext context = new();
+            int confirmCount = context.IssueVotes.Count(v =>
+            v.IssueId == currentIssue.IssueId &&
+            v.ConfirmedIssue);
+            return confirmCount.ToString();
         }
 
     }

@@ -1,23 +1,27 @@
-﻿using System;
+﻿using CommunityAppMiniProjectWinForms.Classes;
+using CommunityAppMiniProjectWinForms.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic.ApplicationServices;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices.Marshalling;
 using System.Text;
 using System.Windows.Forms;
-using CommunityAppMiniProjectWinForms.Classes;
-using CommunityAppMiniProjectWinForms.Data;
 
 namespace CommunityAppMiniProjectWinForms.Forms
 {
     public partial class IssuePost : UserControl
     {
         private Issue CurrIssue; //will be used to store the issue thats passed into issuepost.
+         
         public IssuePost(Issue issue)
         {
             CurrIssue = issue;
-
+            using AppDataContext context = new();
             InitializeComponent();
             DepartmentAcceptIssueBtn.Hide();
             DepartmentCompleteBtn.Hide();
@@ -51,7 +55,7 @@ namespace CommunityAppMiniProjectWinForms.Forms
             {
                 PictureBox1.Image = Image.FromFile(CurrIssue.ImagePath);
             }
-            VoteCountDisplay.Text = CurrIssue.GetConfirmVoteCount.ToString();
+            VoteCountDisplay.Text = context.GetLikedCount(CurrIssue);
             SubmittedByDisplay.Text = CurrIssue.User.Username; //lost upon program closure. The userid relationships helps receive it beack in loadissue().
 
             //Only the user that submitted the post can remove it. Therefore, the
@@ -70,15 +74,18 @@ namespace CommunityAppMiniProjectWinForms.Forms
 
         private void AgreeBtn_Click(object sender, EventArgs e)
         {
-            if (!CurrIssue.UserLiked.Contains(AppData.CurrentUser.Username))
+            using AppDataContext context = new();
+            IssueVote? vote = context.IssueVotes.Find(AppData.CurrentUser.UserId, CurrIssue.IssueId);
+            if(vote == null)
             {
-                CurrIssue.AddLikedUser(AppData.CurrentUser.Username);
+                vote = new(); //if vote object is null, create a new instance and set the properties.
+                vote.IssueId = CurrIssue.IssueId;
+                vote.UserId = AppData.CurrentUser.UserId;
+                context.IssueVotes.Add(vote);
             }
-            else if (CurrIssue.UserLiked.Contains(AppData.CurrentUser.Username))
-            {
-                CurrIssue.RemoveLikedUser(AppData.CurrentUser.Username);
-            }
-            VoteCountDisplay.Text = CurrIssue.GetConfirmVoteCount.ToString();
+            vote.ConfirmedIssue = !vote.ConfirmedIssue; //toggles true/false
+            context.SaveChanges();
+            VoteCountDisplay.Text = context.GetLikedCount(CurrIssue);
         }
 
         private void RemovePostBtn_Click(object sender, EventArgs e)

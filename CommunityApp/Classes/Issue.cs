@@ -22,7 +22,6 @@ public class Issue
 	[NotMapped]
     public Image? Image { get; set; }
     public string? Severity { get; set; }
-	private HashSet<string> _ConfirmVotes { get; set; } = new();  //the number of users that agrees of the ongoing issue.
 	private HashSet<User> _CompleteVotes { get; set; } = new(); //the number of users who agree that the work order is completed.
 	private int _VotesNeeded { get; set; }
 
@@ -49,15 +48,8 @@ public class Issue
 
     //==============MODIFIERS============================//
 	//Both the Add/Remove like ID is used for the "like" button.
-    public void AddLikedUser(string user)
-	{
-		_ConfirmVotes.Add(user);
-	}
 
-	public void RemoveLikedUser(string user)
-	{
-		_ConfirmVotes.Remove(user);
-	}
+
 
     public void AddUserCompleted(User user)
     {
@@ -68,20 +60,12 @@ public class Issue
     //====================PUBLIC PROPERTIES ACCESSORS========================//
   
 
-	public int GetConfirmVoteCount
-	{
-		get { return _ConfirmVotes.Count; }
-	}
 
 	public int GetCompleteVoteCount
 	{
 		get { return _CompleteVotes.Count; }
 	}
 
-	public HashSet<string> UserLiked
-	{
-		get { return _ConfirmVotes; }
-	}
 	public int GetVoteNeededToComplete
 	{
 		get { return _VotesNeeded; }
