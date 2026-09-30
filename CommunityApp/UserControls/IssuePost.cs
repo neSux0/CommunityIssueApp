@@ -25,6 +25,7 @@ namespace CommunityAppMiniProjectWinForms.Forms
             InitializeComponent();
             DepartmentAcceptIssueBtn.Hide();
             DepartmentCompleteBtn.Hide();
+            DepartmentCompleteBtn.Enabled = false; // disables this button. accept button needs to be clicked first.
             UserConfirmCompleteBtn.Hide();
             if (AppData.CurrentUser.IsDepartment)
             {
@@ -34,12 +35,17 @@ namespace CommunityAppMiniProjectWinForms.Forms
                 if (CurrIssue.WorkStatus == IssueStatus.InProgress)
                 {
                     DepartmentAcceptIssueBtn.Enabled = false;
+                    DepartmentCompleteBtn.Enabled = true; //this becomes enabled once issuestatus is in progress.
                 }
                 if (CurrIssue.WorkStatus == IssueStatus.WaitingUserApproval)
                 {
+                    //this should be disabled if its at waiting user approval stage.
+                    //this is important upon program exiting and restarting.
+                    DepartmentAcceptIssueBtn.Enabled = false; 
                     DepartmentCompleteBtn.Enabled = false;
                 }
             }
+            //if they are a regular user and the issue state is waiting for usre approval, then the confirm button shows.
             if (!AppData.CurrentUser.IsDepartment && CurrIssue.WorkStatus == IssueStatus.WaitingUserApproval)
             {
                 UserConfirmCompleteBtn.Show();
@@ -94,6 +100,7 @@ namespace CommunityAppMiniProjectWinForms.Forms
             context.RemoveIssue(CurrIssue.IssueId);
             Parent?.Controls.Remove(this);
             Dispose();
+            context.SaveChanges();
         }
 
         private string GetStatusText(IssueStatus status)
@@ -110,20 +117,47 @@ namespace CommunityAppMiniProjectWinForms.Forms
 
         private void DepartmentAcceptIssueBtn_Click(object sender, EventArgs e)
         {
-            CurrIssue.ChangeWorkStatus(IssueStatus.InProgress);
-            StatusDisplay.Text = GetStatusText(CurrIssue.WorkStatus);
-            DepartmentAcceptIssueBtn.Enabled = false;
+            using AppDataContext context = new();
+            try
+            {
+                //if true, database workstatus has changed.
+                if (context.ChangeWorkStatus(CurrIssue, IssueStatus.InProgress))
+                {
+                    CurrIssue.WorkStatus = IssueStatus.InProgress; //if database has changed, just change the in memory location for display.
+                    StatusDisplay.Text = GetStatusText(CurrIssue.WorkStatus);
+                    DepartmentAcceptIssueBtn.Enabled = false;
+                    DepartmentCompleteBtn.Enabled = true; //this becomes enabled when accept button gets clicked.
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Work Status cannot be changed.");
+            }
         }
 
         private void DepartmentCompleteBtn_Click(object sender, EventArgs e)
         {
-            CurrIssue.ChangeWorkStatus(IssueStatus.WaitingUserApproval);
-            StatusDisplay.Text = GetStatusText(CurrIssue.WorkStatus);
-            DepartmentCompleteBtn.Enabled = false;
+            using AppDataContext context = new();
+            try
+            {
+                //if true, database workstatus has changed.
+                if (context.ChangeWorkStatus(CurrIssue, IssueStatus.WaitingUserApproval))
+                {
+                    CurrIssue.WorkStatus = IssueStatus.WaitingUserApproval; //if database has changed, just change the in memory location for display.
+                    StatusDisplay.Text = GetStatusText(CurrIssue.WorkStatus);
+                    DepartmentAcceptIssueBtn.Enabled = false;
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Work Status cannot be changed.");
+            }
+            DepartmentCompleteBtn.Enabled = false; //disables the button upon click.
         }
 
         private void UserConfirmCompleteBtn_Click(object sender, EventArgs e)
         {
+            /*
             if (CurrIssue.GetVoteNeededToComplete == CurrIssue.GetCompleteVoteCount)
             {
                 CurrIssue.ChangeWorkStatus(IssueStatus.Completed);
@@ -131,6 +165,7 @@ namespace CommunityAppMiniProjectWinForms.Forms
             CurrIssue.AddUserCompleted(AppData.CurrentUser);
             StatusDisplay.Text = GetStatusText(CurrIssue.WorkStatus);
             UserConfirmCompleteBtn.Enabled = false;
+            */
         }
 
     }

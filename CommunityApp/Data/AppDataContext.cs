@@ -45,54 +45,61 @@ namespace CommunityAppMiniProjectWinForms.Classes
 
         public void AddUser(User user)
         {
-            using AppDataContext context = new();
-            context.Users.Add(user);
-            context.SaveChanges();
+            Users.Add(user);
+            SaveChanges();
         }
         public void AddIssue(Issue issue)
         {
-            using AppDataContext context = new();
-            context.Issues.Add(issue);
-            context.SaveChanges();
+            Issues.Add(issue);
+            SaveChanges();
         }
 
         public void AddIssueVote(IssueVote vote)
         {
-            using AppDataContext context = new();
-            context.IssueVotes.Add(vote);
-            context.SaveChanges();
+            IssueVotes.Add(vote);
+            SaveChanges();
         }
         public User? SearchUser(string username)
         {
-            using AppDataContext context = new();
-            return context.Users
+            return Users
                 .FirstOrDefault(u => u.Username == username); //it returns a match or null.
         }
 
         public bool ContainsUser(string username)
         {
-            using AppDataContext context = new();
-            return context.Users
+            return Users
                 .Any(u => u.Username == username);
         }
         public void RemoveIssue(int issueID)
         {
-            using AppDataContext context = new();
-            Issue? issue = context.Issues.FirstOrDefault(i => i.IssueId == issueID);
+            Issue? issue = Issues.FirstOrDefault(i => i.IssueId == issueID);
             if (issue != null)
             {
-                context.Issues.Remove(issue);
-                context.SaveChanges();
+                Issues.Remove(issue);
+                SaveChanges();
             }
         }
 
         public string GetLikedCount(Issue currentIssue)
         {
-            using AppDataContext context = new();
-            int confirmCount = context.IssueVotes.Count(v =>
+            int confirmCount = IssueVotes.Count(v =>
             v.IssueId == currentIssue.IssueId &&
             v.ConfirmedIssue);
             return confirmCount.ToString();
+        }
+
+        public bool ChangeWorkStatus(Issue currentIssue, IssueStatus newWorkStatus)
+        {
+
+            Issue? issue = Issues.Find(currentIssue.IssueId);
+
+            if (issue != null)
+            {
+                issue.WorkStatus = newWorkStatus;
+                SaveChanges();
+                return true;
+            }
+                return false;
         }
 
     }

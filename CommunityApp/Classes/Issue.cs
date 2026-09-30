@@ -21,7 +21,6 @@ public class Issue
 	//================================================//
 	[NotMapped]
     public Image? Image { get; set; }
-    public string? Severity { get; set; }
 	private HashSet<User> _CompleteVotes { get; set; } = new(); //the number of users who agree that the work order is completed.
 	private int _VotesNeeded { get; set; }
 
@@ -70,10 +69,4 @@ public class Issue
 	{
 		get { return _VotesNeeded; }
 	}
-
-    //=============HELPER FUNCTIONS===================//
-    public void ChangeWorkStatus(IssueStatus NewStatus)
-    {
-		WorkStatus = NewStatus;
-    }
 }
