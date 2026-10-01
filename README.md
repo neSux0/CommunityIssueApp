@@ -125,3 +125,16 @@ Because this is a learning project, several production features are intentionall
 - Automated testing
 - Production-grade authorization
 - Cloud image storage
+
+## Next Learning Focus
+
+After completing the database-focused portion of this project, my next learning goals are:
+
+- ASP.NET Core Web API development
+- HTTP and REST API fundamentals
+- Connecting ASP.NET Core to Entity Framework Core
+- Basic dependency injection
+- Azure-based deployment and services
+- AI integration in C# applications
+
+The goal is to apply these concepts in a new project rather than continue significantly expanding this WinForms application.

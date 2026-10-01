@@ -1,56 +1,171 @@
 # Product Requirements Document (PRD)
 
 ## Product Overview
-The current plan for this program is to create a BASIC mock community network that allows them to quickly post community issues while giving government agencies and officials the accountalbity to fix these issues. These issues can include potholes, broken traffic lights, dead animals, clogged storm drains, damaged roads, etc. 
-A user must post a picture, description of damage, and the location. An n numbers of users are needed to confirm the validity and the urgency of the issue before it can be sent up to the apporaipate agency. The issues with the most agreement and/or will be priortiized. 
-If the issue is fixed, the number of days will be marked down and will be marked as completed upon n users confirming. 
+
+The Community Issue Reporting Application is a **basic mock community-reporting platform** that allows residents to quickly report local problems and allows department users to track and manage those reports.
+
+Examples of reportable issues include:
+
+- Potholes
+- Broken traffic lights
+- Damaged roads
+- Clogged storm drains
+- Dead animals
+- Other local infrastructure problems
+
+Community users can create an issue by providing a description, location, and optional image. Submitted issues appear in a shared community feed where other users can agree with the report.
+
+Department users can review reported issues, accept them for work, update their status, and indicate when the issue has been resolved.
+
+Community users can then confirm whether the reported problem was actually fixed.
+
+---
 
 ## Problem
 
-When a person wants to report an issue, it is often done by a inconvinient and slow process that involes user inputting sensitive informaition or confusing navigation of the webpage, or just may completely forget about it when they arrive home. 
-## Goals
-### Primary Goals:
-This mock social media-like app makes it more convineient and allows them to
-post the issue directly to a public feed, let other users agree, and directs it to the respective agency. The gov agency will also know what issue are truthful and will not waste resources to go to an area that may not have that issue, they will be informed of the severiyt of the issue, how much of an impact it has on the community, while tracking accountablity.
-### Secondary Goals:
-- May extend to final project. 
-- Reducing duplicates.
-- Prevent invalid reports.
-- etc.
+Reporting community problems can sometimes be inconvenient or confusing.
 
-## USERS
-#### Community USERS
-- Report an issue by posting a picture, detailed info, location.
-- View reported issues.
-- Confirm/Upvote/Agree to a post.
-- Verify a issue is resolved. n number of user is needed to be fully verified.
-- Be able to log off without ending the program.
-#### Government Users
-- View reported issues.
-- Accept/Reject Issues.
-- Update status of an issue (Pending/Resolved).
-- Be able to log off without ending the program.
-## ISSUES
-### Issues can be prioritized based on:
+Residents may need to:
 
-- Number of confirmations
-- Severity(Low, mid, high)
-- How long the issue has been reported
+- Find the correct government website or department
+- Navigate multiple forms
+- Provide unnecessary information
+- Remember to report the problem later
 
-## Forms
-- Log In Form/ Create account pop up?
-- The main feed Form. 
-### Technlogies
-- Winforms
-- C#
-- .NET
+As a result, some community problems may go unreported or may not clearly show how many residents are affected.
 
-### Features
-- Collects data of community issues. 
-- Respective department/official can accept and send work order.
-- Once fixed, community will confirm. 
+This application explores a simpler, social-media-style reporting process where residents can quickly submit an issue and allow other community members to confirm that the problem exists.
 
-## Solution Structure
-1. Forms - Different Winforms screens.
-2. Data - Where the data will be stored.
-3. Tests - unit testing.
+---
+
+## Primary Goals
+
+The application should:
+
+- Make reporting community issues quick and simple.
+- Allow users to post issues directly to a shared feed.
+- Allow other users to agree with reported issues.
+- Show which issues have greater community interest.
+- Allow department users to review and manage issues.
+- Allow departments to update the status of an issue.
+- Allow community users to confirm whether completed work actually resolved the issue.
+- Maintain issue information between application sessions.
+
+---
+
+## User Types
+
+### Community User
+
+Community users should be able to:
+
+- Create an account
+- Log in
+- View reported issues
+- Create an issue
+- Add a description and location
+- Attach an image
+- Agree with another user's issue
+- View the current issue status
+- Delete their own issue
+- Confirm whether an issue has been resolved
+
+### Department User
+
+Department users should be able to:
+
+- Log in
+- View reported issues
+- Accept an issue for work
+- Update an issue's status
+- Indicate when work has been completed
+- Remove inappropriate or invalid issue posts
+
+---
+
+## Issue Workflow
+
+The intended issue lifecycle is:
+
+```text
+Submitted
+    ↓
+In Progress
+    ↓
+Waiting User Approval
+    ↓
+Completed
+```
+
+### Submitted
+A community user has created the issue.
+
+Other community users can agree with the report.
+
+### In Progress
+A department user has accepted the issue and is working on it.
+
+### Waiting User Approval
+The department indicates that the work has been completed.
+
+Community users can confirm whether the issue was actually resolved.
+
+### Completed
+The required number of community completion confirmations has been reached.
+
+---
+
+## Voting and Community Feedback
+
+Community interaction is used to represent how strongly an issue affects the community.
+
+The application should allow:
+
+- A user to agree with an issue.
+- A user to remove their agreement.
+- One voting record per user and issue.
+- Community users to confirm issue completion.
+- Agreement counts to help indicate community interest or priority.
+
+---
+
+## Project Scope
+
+This application is primarily a **learning project** rather than a production-ready civic reporting platform.
+
+The main purpose is to practice:
+
+- C# application development
+- Persistent data storage
+- Relational database concepts
+- CRUD operations
+- User and issue relationships
+- Voting relationships
+- Application state management
+- Git and GitHub workflow
+
+The primary database-learning objectives for this project are now largely complete.
+
+Major continued development is not currently planned. The next learning focus will move toward **ASP.NET Core Web API development** and other backend concepts.
+
+A small AI-related feature may be added as a final experiment, such as:
+
+- Automatically categorizing an issue
+- Suggesting the responsible department
+- Summarizing an issue report
+- Detecting potentially similar reports
+
+---
+
+## Out of Scope
+
+Because this is a learning project, the following are currently outside the intended scope:
+
+- Production deployment
+- Production-grade authentication
+- Large-scale government integration
+- Real department dispatch systems
+- Cloud-scale infrastructure
+- Advanced security
+- Full mobile support
+- Large-scale AI functionality
