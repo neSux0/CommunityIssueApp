@@ -67,7 +67,7 @@ namespace CommunityAppMiniProjectWinForms.Forms
             //Only the user that submitted the post can remove it. Therefore, the
             //remove button will only show for that user.
             //It will also show for department users.
-            if (CurrIssue.User == AppData.CurrentUser || AppData.CurrentUser.IsDepartment)
+            if (CurrIssue.User.UserId == AppData.CurrentUser.UserId || AppData.CurrentUser.IsDepartment)
             {
                 RemovePostBtn.Show();
             }
