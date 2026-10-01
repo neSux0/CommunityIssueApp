@@ -1,14 +1,130 @@
-# Product Requirements Document (PRD)
+# Community Issue Reporting Application
 
-## Product Overview
-The current plan for this program is to create a WinForms app BASIC mock community network that allows them to quickly post community issues while giving government agencies and officials the accountalbity to fix these issues. These issues can include potholes, broken traffic lights, dead animals, clogged storm drains, damaged roads, etc. 
-A user must post a picture, description of damage, and the location. An n numbers of users are needed to confirm the validity and the urgency of the issue before it can be sent up to the apporaipate agency. The issues with the most agreement and/or will be priortiized. 
-If the issue is fixed, the number of days will be marked down and will be marked as completed upon n users confirming. 
+A C# WinForms learning project that simulates a community issue-reporting platform where users can report local problems, agree with reports, and track their resolution.
 
-## Problem
+The primary purpose of this project was to learn **relational database design and Entity Framework Core integration** with a desktop application.
 
-When a person wants to report an issue, it is often done by a inconvinient and slow process that involes user inputting sensitive informaition or confusing navigation of the webpage, or just may completely forget about it when they arrive home. 
-## Goals
-### Primary Goals:
-This mock social media-like app makes it more convineient and allows them to
-post the issue directly to a public feed, let other users agree, and directs it to the respective agency. The gov agency will also know what issue are truthful and will not waste resources to go to an area that may not have that issue, they will be informed of the severiyt of the issue, how much of an impact it has on the community, while tracking accountablity.
+## Technologies
+
+- C#
+- .NET WinForms
+- Entity Framework Core
+- SQLite
+- LINQ
+- Git / GitHub
+
+## Features
+
+### Community Users
+
+- Create an account and log in
+- Submit community issues
+- Add descriptions, locations, and images
+- View issues in a shared feed
+- Agree with reported issues
+- Remove their own issues
+- Confirm when an issue has been resolved
+
+### Department Users
+
+- View submitted issues
+- Accept issues for work
+- Update issue status
+- Mark work as ready for community verification
+- Remove issue posts
+
+## Issue Workflow
+
+```text
+Submitted
+    ↓
+In Progress
+    ↓
+Waiting User Approval
+    ↓
+Completed
+```
+
+## Database Design
+
+The application uses **Entity Framework Core with SQLite** for persistent storage.
+
+### User → Issue
+
+A user can create multiple issues.
+
+```text
+User 1 ─────────< Many Issues
+```
+
+`Issue.UserId` is a foreign key referencing the user who created the issue.
+
+### User ↔ Issue Voting
+
+Voting is modeled using an `IssueVote` junction entity.
+
+```text
+User >──── IssueVote ────< Issue
+```
+
+`IssueVote` uses a composite primary key:
+
+```text
+(UserId, IssueId)
+```
+
+This allows:
+
+- One user to interact with many issues
+- One issue to receive interactions from many users
+- One voting record per user/issue combination
+
+The voting record stores both issue agreement and completion confirmation.
+
+## What I Learned
+
+This project gave me practical experience with:
+
+- Entity Framework Core
+- SQLite
+- CRUD operations
+- Relational database design
+- Primary and foreign keys
+- One-to-many relationships
+- Many-to-many relationships
+- Junction tables/entities
+- Composite primary keys
+- Unique indexes
+- LINQ database queries
+- EF Core migrations
+- Navigation properties
+- Persistent vs. in-memory data
+- Synchronizing database changes with a WinForms UI
+- Git branches, commits, pull requests, and merges
+
+One important lesson was understanding that **C# object identity and database identity are different**. Two objects can represent the same database record without being the same object in memory, so database primary keys are often used when comparing entities.
+
+## Project Status
+
+This project was primarily created as a **database-learning project**, rather than as a production application.
+
+The main database-learning objectives have been completed, and I currently plan to move on to another project rather than continue significantly expanding this application.
+
+I may add one small AI-related feature as a final experiment, such as:
+
+- Automatically categorizing an issue
+- Suggesting the appropriate department
+- Summarizing an issue report
+- Identifying potentially similar reports
+
+## Limitations
+
+Because this is a learning project, several production features are intentionally outside its scope, including:
+
+- Secure production authentication
+- Password hashing
+- Cloud deployment
+- Extensive input validation
+- Automated testing
+- Production-grade authorization
+- Cloud image storage

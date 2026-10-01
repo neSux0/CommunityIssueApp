@@ -1,95 +1,87 @@
-# Design Workflow Process (The Big Picture)
-## Date: August 17, 2026.
-### Form 1: The Log In Form.
-1. Log in to account page.
-2. Create an account pop up. Simple checkbox to see if they are gov official. If the box is not checked, they are just a community user.
-3. Logging in should close this form and open main feed form.
-### Form 2: The main feed form.
-1. A basic design with "ISSUES" text on top.
-2. A counter with number of users that agrees.
-3. A feed containing issues submitted by users with timestamp.
-4. A status bar: Pending/Verfied.
-5. A log off button.
-#### Form2: Public View
-1. There should be an option to attach a picture, make it visible, and a description with the issue.
-2. They should be able to "like", "Agree" or add to the counter.
-3. Users can vote to change "pending complete" to "completed". A user can only vote once.
-#### Form2: Department View
-1. They can change the status bar to In Progress/pending complete.
-2. They could also delete the post.
+# Design Workflow Process
 
-### Issue Status Workflow
+## Updated: October 1, 2026
 
-1. Pending
-   - Issue has been submitted.
-   - Community users can confirm the issue.
+## 1. Project Scope
 
-2. Verified
-   - Issue has received the required number of confirmations.
-   - Government/department can now review it.
+The Community Issue Reporting Application is a **C# WinForms learning project** primarily created to practice relational database design and Entity Framework Core.
 
-3. In Progress
-   - Department has accepted the issue and is working on it.
+The application simulates a community issue-reporting system where:
 
-4. Pending Completion
-   - Department indicates that the issue has been fixed.
-   - Community users can vote to confirm completion.
+- Community users report local problems.
+- Other users can agree with those reports.
+- Department users manage reported issues.
+- Community users can confirm when work has been completed.
 
-5. Completed
-   - Issue has received the required number of completion votes.
+The primary database-learning objectives are now complete. I do not currently plan to significantly expand this project and intend to move on to another project after possibly experimenting with one small AI-related feature.
 
-   ### Issue Data
+---
 
-Each issue contains:
+# 2. Technology Stack
 
-- Issue ID
-- Description
-- Location
-- Image
-- Date/time reported
-- Severity
-- WorkStatus
-- Number of confirmations
-- Number of completion votes
-- User who created the issue
+The application uses:
 
-### User Data
+- C#
+- .NET WinForms
+- Entity Framework Core
+- SQLite
+- LINQ
+- Git / GitHub
 
-Each user contains:
+Basic architecture:
 
-- User ID
-- Username
-- Password
-- Account type
-    - Community
-    - Government
+```text
+WinForms UI
+    ↓
+C# Application Logic
+    ↓
+Entity Framework Core
+    ↓
+SQLite Database
+```
 
-### Voting Rules
+---
 
-- A community user can confirm an issue once. The higher the vote the higher the priorty.
-- A community user can vote for completion once.
-- Users cannot vote on their own issue more than once.
-- Once the required number of completion votes is reached, the issue becomes Completed.
-### 
-#### Models/
-    User.cs
-    - Public.cs
-    - Department.cs
-    Issue.cs
-    Vote.cs
+# 3. User Workflow
 
-#### Forms/
-    LoginForm.cs
-    MainFeedForm.cs
-    CreateIssueForm.cs
+## Community User
 
+A community user can:
 
-## UPDATED as of September 17, 2026.
-#### DATA
-- Will use persistent database.
-- Use Entity Framework Core.SqLite.
-- The models to be used will be
-    ##### Users & Issues
-      - UserId is the primary key of User.
-      - Issue contains UserId as a foreign key referencing User.UserId.
-        
+- Create an account
+- Log in
+- View reported issues
+- Create an issue
+- Add a description, location, and image
+- Agree with an issue
+- Remove their own issue
+- Confirm that an issue has been resolved
+
+## Department User
+
+A department user can:
+
+- Log in
+- View reported issues
+- Accept an issue
+- Change issue status
+- Mark work as ready for community verification
+- Remove issue posts
+
+---
+
+# 4. Issue Status Workflow
+
+The current issue workflow is:
+
+```text
+Submitted
+    ↓
+In Progress
+    ↓
+Waiting User Approval
+    ↓
+Completed
+```
+
+### Submitted
