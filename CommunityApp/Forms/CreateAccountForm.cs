@@ -1,4 +1,5 @@
 ﻿using CommunityAppMiniProjectWinForms.Data;
+using CommunityAppMiniProjectWinForms.Classes;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,7 +9,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-namespace CommunityApp
+namespace CommunityAppMiniProjectWinForms
 {
     public partial class CreateAccountForm : Form
     {
@@ -70,6 +71,8 @@ namespace CommunityApp
 
         private void SignUpBtn_Click(object sender, EventArgs e)
         {
+            using AppDataContext context = new();
+
             string username = UserNameTextBox2.Text;
             string password = PasswordTextbox2.Text;
             ///EDGE CASES for user creation.
@@ -83,7 +86,7 @@ namespace CommunityApp
                 MessageBox.Show("Password must be greater have 8 charachters or more.");
                 return;
             }
-            if (AppData.ContainsUser(username))
+            if (context.ContainsUser(username))
             {
                 MessageBox.Show("Username already exists. Please choose another one.");
                 return;
@@ -92,11 +95,11 @@ namespace CommunityApp
             {
                 if (IsGov.Checked)
                 {
-                    AppData.AddUser(new DepartmentUser(username, password));
+                    context.AddUser(new DepartmentUser(username, password));
                 }
                 else
                 {
-                    AppData.AddUser(new PublicUser(username, password));
+                    context.AddUser(new PublicUser(username, password));
 
                 }
                 this.Close();

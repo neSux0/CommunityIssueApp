@@ -1,4 +1,4 @@
-﻿namespace CommunityApp
+﻿namespace CommunityAppMiniProjectWinForms
 {
     partial class LogInForm
     {

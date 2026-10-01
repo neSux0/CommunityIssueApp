@@ -7,6 +7,7 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using Microsoft.EntityFrameworkCore;
 
 namespace CommunityAppMiniProjectWinForms.Forms
 {
@@ -17,10 +18,10 @@ namespace CommunityAppMiniProjectWinForms.Forms
         public MainFeed()
         {
             InitializeComponent();
-            if (AppData.GetCurrentUser is DepartmentUser)
+            if (AppData.CurrentUser.IsDepartment)
             {
                 AddIssueBtn.Enabled = false; //prevents department user from liking.
-                MainFeedTitleLabel.Text = $"Welcome, {AppData.GetCurrentUser.Username}!"; 
+                MainFeedTitleLabel.Text = $"Welcome, {AppData.CurrentUser.Username}!"; 
             }
             LoadIssues();
         }
@@ -28,7 +29,9 @@ namespace CommunityAppMiniProjectWinForms.Forms
         private void LoadIssues()
         {
             FeedPanel.Controls.Clear(); //this needs to be added to prevent duplicates posting.
-            foreach (Issue issue in AppData.IssuesList)
+            using AppDataContext context = new();
+
+            foreach (Issue issue in context.Issues.Include(i => i.User)) //it uses userID relationship in each issue to get the User.
             {
                 IssuePost post = new IssuePost(issue);
                 FeedPanel.Controls.Add(post);

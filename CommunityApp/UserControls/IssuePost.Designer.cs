@@ -219,7 +219,7 @@
             // 
             // UserConfirmCompleteBtn
             // 
-            UserConfirmCompleteBtn.Location = new Point(411, 264);
+            UserConfirmCompleteBtn.Location = new Point(411, 268);
             UserConfirmCompleteBtn.Name = "UserConfirmCompleteBtn";
             UserConfirmCompleteBtn.Size = new Size(202, 33);
             UserConfirmCompleteBtn.TabIndex = 22;
@@ -251,7 +251,7 @@
             Controls.Add(PictureBox1);
             Font = new Font("Segoe UI", 9F);
             Name = "IssuePost";
-            Size = new Size(628, 420);
+            Size = new Size(628, 444);
             ((System.ComponentModel.ISupportInitialize)PictureBox1).EndInit();
             ResumeLayout(false);
             PerformLayout();
