@@ -80,12 +80,20 @@ namespace CommunityAppMiniProjectWinForms.Classes
             }
         }
 
-        public string GetLikedCount(Issue currentIssue)
+        public int GetLikedCount(Issue currentIssue)
         {
             int confirmCount = IssueVotes.Count(v =>
-            v.IssueId == currentIssue.IssueId &&
-            v.ConfirmedIssue);
-            return confirmCount.ToString();
+                                v.IssueId == currentIssue.IssueId &&
+                                v.ConfirmedIssue);
+            return confirmCount;
+        }
+
+        public int GetCompleteVoteCount(Issue currentIssue)
+        {
+            int completeCount = IssueVotes.Count(v =>
+                                v.IssueId == currentIssue.IssueId &&
+                                v.ConfirmedComplete);
+            return completeCount;
         }
 
         public bool ChangeWorkStatus(Issue currentIssue, IssueStatus newWorkStatus)

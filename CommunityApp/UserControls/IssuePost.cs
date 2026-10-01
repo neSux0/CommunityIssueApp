@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Net.Mime;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.Marshalling;
 using System.Text;
@@ -17,7 +18,7 @@ namespace CommunityAppMiniProjectWinForms.Forms
     public partial class IssuePost : UserControl
     {
         private Issue CurrIssue; //will be used to store the issue thats passed into issuepost.
-         
+
         public IssuePost(Issue issue)
         {
             CurrIssue = issue;
@@ -27,6 +28,12 @@ namespace CommunityAppMiniProjectWinForms.Forms
             DepartmentCompleteBtn.Hide();
             DepartmentCompleteBtn.Enabled = false; // disables this button. accept button needs to be clicked first.
             UserConfirmCompleteBtn.Hide();
+
+            if(issue.WorkStatus == IssueStatus.WaitingUserApproval)
+            {
+                AgreeBtn.Enabled = false; //once the work status changes to waiting user approval, it should no longer be liked.
+            }
+
             if (AppData.CurrentUser.IsDepartment)
             {
                 AgreeBtn.Enabled = false; //prevents department user from liking.
@@ -41,7 +48,7 @@ namespace CommunityAppMiniProjectWinForms.Forms
                 {
                     //this should be disabled if its at waiting user approval stage.
                     //this is important upon program exiting and restarting.
-                    DepartmentAcceptIssueBtn.Enabled = false; 
+                    DepartmentAcceptIssueBtn.Enabled = false;
                     DepartmentCompleteBtn.Enabled = false;
                 }
             }
@@ -61,12 +68,13 @@ namespace CommunityAppMiniProjectWinForms.Forms
             {
                 PictureBox1.Image = Image.FromFile(CurrIssue.ImagePath);
             }
-            VoteCountDisplay.Text = context.GetLikedCount(CurrIssue);
+            VoteCountDisplay.Text = context.GetLikedCount(CurrIssue).ToString();
             SubmittedByDisplay.Text = CurrIssue.User.Username; //lost upon program closure. The userid relationships helps receive it beack in loadissue().
 
             //Only the user that submitted the post can remove it. Therefore, the
             //remove button will only show for that user.
             //It will also show for department users.
+            //// Same user data does not mean the same object reference.
             if (CurrIssue.User.UserId == AppData.CurrentUser.UserId || AppData.CurrentUser.IsDepartment)
             {
                 RemovePostBtn.Show();
@@ -82,7 +90,7 @@ namespace CommunityAppMiniProjectWinForms.Forms
         {
             using AppDataContext context = new();
             IssueVote? vote = context.IssueVotes.Find(AppData.CurrentUser.UserId, CurrIssue.IssueId);
-            if(vote == null)
+            if (vote == null)
             {
                 vote = new(); //if vote object is null, create a new instance and set the properties.
                 vote.IssueId = CurrIssue.IssueId;
@@ -91,7 +99,7 @@ namespace CommunityAppMiniProjectWinForms.Forms
             }
             vote.ConfirmedIssue = !vote.ConfirmedIssue; //toggles true/false
             context.SaveChanges();
-            VoteCountDisplay.Text = context.GetLikedCount(CurrIssue);
+            VoteCountDisplay.Text = context.GetLikedCount(CurrIssue).ToString();
         }
 
         private void RemovePostBtn_Click(object sender, EventArgs e)
@@ -105,11 +113,25 @@ namespace CommunityAppMiniProjectWinForms.Forms
 
         private string GetStatusText(IssueStatus status)
         {
+            using AppDataContext context = new();
+            //only half the users that liked the issue is needed to complete the vote. 
+            //if it rounds down to 0, only 1 user is needed.
+            int likedCount = context.GetLikedCount(CurrIssue) / 2;
+            int issueFixedCount = context.GetCompleteVoteCount(CurrIssue);
+            if(likedCount == 0)
+            {
+                likedCount = 1;
+            }
+            if(likedCount == issueFixedCount)
+            {
+                status = IssueStatus.Completed;
+                UserConfirmCompleteBtn.Hide(); //hides the confirm complete button.
+            }
             return status switch
             {
                 IssueStatus.Submitted => "Submitted",
                 IssueStatus.InProgress => "In Progress...",
-                IssueStatus.WaitingUserApproval => $"Waiting for {CurrIssue.GetCompleteVoteCount}/{CurrIssue.GetVoteNeededToComplete} users to confirm...",
+                IssueStatus.WaitingUserApproval => $"Waiting for {issueFixedCount}/{likedCount} users to confirm...",
                 IssueStatus.Completed => "Completed",
                 _ => "Status not found." //default case.
             };
@@ -157,15 +179,19 @@ namespace CommunityAppMiniProjectWinForms.Forms
 
         private void UserConfirmCompleteBtn_Click(object sender, EventArgs e)
         {
-            /*
-            if (CurrIssue.GetVoteNeededToComplete == CurrIssue.GetCompleteVoteCount)
+            using AppDataContext context = new();
+            IssueVote? vote = context.IssueVotes.Find(AppData.CurrentUser.UserId, CurrIssue.IssueId);
+            if (vote == null)
             {
-                CurrIssue.ChangeWorkStatus(IssueStatus.Completed);
+                vote = new(); //if vote object is null or doesnt exsit, create a new instance and set the properties.
+                vote.IssueId = CurrIssue.IssueId;
+                vote.UserId = AppData.CurrentUser.UserId;
+                context.IssueVotes.Add(vote);
             }
-            CurrIssue.AddUserCompleted(AppData.CurrentUser);
+            vote.ConfirmedComplete = true; //sets to true.
+            context.SaveChanges();
             StatusDisplay.Text = GetStatusText(CurrIssue.WorkStatus);
-            UserConfirmCompleteBtn.Enabled = false;
-            */
+
         }
 
     }
