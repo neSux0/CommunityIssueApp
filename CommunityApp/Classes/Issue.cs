@@ -21,8 +21,6 @@ public class Issue
 	//================================================//
 	[NotMapped]
     public Image? Image { get; set; }
-	private HashSet<User> _CompleteVotes { get; set; } = new(); //the number of users who agree that the work order is completed.
-	private int _VotesNeeded { get; set; }
 
     // Used by EF Core to recreate Issue objects from database data
     // without calling the normal constructor.
@@ -38,35 +36,12 @@ public class Issue
 
         WorkStatus = IssueStatus.Submitted;
 		CreatedAt = DateTime.Now;
-
-		_VotesNeeded = 2; //hard coded. 2 votes are needed to complete post.
 		//this keeps it convient because it allows us to track the user without having to query the database.
 		UserId = CreatedByUser.UserId; // when an issue is created, store the user object that created that issue.
 		
     }
-
-    //==============MODIFIERS============================//
-	//Both the Add/Remove like ID is used for the "like" button.
-
-
-
-    public void AddUserCompleted(User user)
-    {
-        _CompleteVotes.Add(user);
-    }
-
-
-    //====================PUBLIC PROPERTIES ACCESSORS========================//
   
 
 
-	public int GetCompleteVoteCount
-	{
-		get { return _CompleteVotes.Count; }
-	}
 
-	public int GetVoteNeededToComplete
-	{
-		get { return _VotesNeeded; }
-	}
 }
